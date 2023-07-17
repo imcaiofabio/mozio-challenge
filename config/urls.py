@@ -2,7 +2,6 @@ from django.urls import path
 from app.views.provider import ProviderAPIView
 from app.views.service_area import ServiceAreaAPIView
 from app.views.polygon import PolygonView
-from django.urls import path, include
 from rest_framework import routers
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
