@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 from app.models.provider import Provider
 from app.models.service_area import ServiceArea
 
