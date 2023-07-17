@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from app.models.provider import Provider
 from app.serializers.provider import ProviderSerializer
+from drf_yasg.utils import swagger_auto_schema
 
 
 class ProviderAPIView(APIView):
@@ -25,6 +26,7 @@ class ProviderAPIView(APIView):
             serializer = ProviderSerializer(providers, many=True)
             return Response(serializer.data)
 
+    @swagger_auto_schema(request_body=ProviderSerializer)
     def post(self, request):
         serializer = ProviderSerializer(data=request.data)
         if serializer.is_valid():
@@ -32,6 +34,7 @@ class ProviderAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(request_body=ProviderSerializer)
     def put(self, request, pk=None):
         if pk:
             provider = self.get_provider(pk)

@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from app.models.service_area import ServiceArea
 from app.serializers.service_area import ServiceAreaSerializer
+from drf_yasg.utils import swagger_auto_schema
 
 
 class ServiceAreaAPIView(APIView):
@@ -11,6 +12,7 @@ class ServiceAreaAPIView(APIView):
         serializer = ServiceAreaSerializer(service_areas, many=True)
         return Response(serializer.data)
 
+    @swagger_auto_schema(request_body=ServiceAreaSerializer)
     def post(self, request):
         serializer = ServiceAreaSerializer(data=request.data)
         if serializer.is_valid():
@@ -35,6 +37,7 @@ class ServiceAreaAPIView(APIView):
         else:
             return self.get(request)
 
+    @swagger_auto_schema(request_body=ServiceAreaSerializer)
     def put(self, request, pk=None):
         if pk is not None:
             service_area = self.get_service_area(pk)

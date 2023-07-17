@@ -2,8 +2,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.models.polygon import Polygon
 from app.serializers.polygon import PolygonSerializer
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg.openapi import Parameter, IN_QUERY
+
 
 class PolygonView(APIView):
+    @swagger_auto_schema(manual_parameters=[
+        Parameter('lat', IN_QUERY, type='str'),
+        Parameter('lng', IN_QUERY, type='str')])
     def get(self, request):
         latitude = float(request.GET.get('lat'))
         longitude = float(request.GET.get('lng'))
