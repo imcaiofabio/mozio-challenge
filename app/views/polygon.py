@@ -8,8 +8,8 @@ from drf_yasg.openapi import Parameter, IN_QUERY
 
 class PolygonView(APIView):
     @swagger_auto_schema(manual_parameters=[
-        Parameter('lat', IN_QUERY, type='str'),
-        Parameter('lng', IN_QUERY, type='str')])
+        Parameter('lat', IN_QUERY, type='float'),
+        Parameter('lng', IN_QUERY, type='float')])
     def get(self, request):
         latitude = float(request.GET.get('lat'))
         longitude = float(request.GET.get('lng'))

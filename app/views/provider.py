@@ -35,7 +35,7 @@ class ProviderAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(request_body=ProviderSerializer)
-    def put(self, request, pk=None):
+    def put(self, request, pk):
         if pk:
             provider = self.get_provider(pk)
 
@@ -49,8 +49,8 @@ class ProviderAPIView(APIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk=None):
-        if pk is not None:
+    def delete(self, request, pk):
+        if pk:
             provider = self.get_provider(pk)
             if provider:
                 provider.delete()

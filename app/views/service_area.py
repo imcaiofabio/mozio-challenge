@@ -7,10 +7,24 @@ from drf_yasg.utils import swagger_auto_schema
 
 
 class ServiceAreaAPIView(APIView):
-    def get(self, request):
-        service_areas = ServiceArea.objects.all()
-        serializer = ServiceAreaSerializer(service_areas, many=True)
-        return Response(serializer.data)
+    def get_service_area(self, pk):
+        try:
+            return ServiceArea.objects.get(pk=pk)
+        except ServiceArea.DoesNotExist:
+            return None
+
+    def get(self, request, pk=None):
+        if pk:
+            service_area = self.get_service_area(pk)
+
+            if service_area:
+                serializer = ServiceAreaSerializer(service_area)
+                return Response(serializer.data)
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            service_areas = ServiceArea.objects.all()
+            serializer = ServiceAreaSerializer(service_areas, many=True)
+            return Response(serializer.data)
 
     @swagger_auto_schema(request_body=ServiceAreaSerializer)
     def post(self, request):
@@ -20,26 +34,9 @@ class ServiceAreaAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get_service_area(self, pk):
-        try:
-            return ServiceArea.objects.get(pk=pk)
-        except ServiceArea.DoesNotExist:
-            return None
-
-    def get(self, request, pk=None):
-        if pk is not None:
-            service_area = self.get_service_area(pk)
-
-            if service_area:
-                serializer = ServiceAreaSerializer(service_area)
-                return Response(serializer.data)
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        else:
-            return self.get(request)
-
     @swagger_auto_schema(request_body=ServiceAreaSerializer)
-    def put(self, request, pk=None):
-        if pk is not None:
+    def put(self, request, pk):
+        if pk:
             service_area = self.get_service_area(pk)
 
             if service_area:
@@ -52,8 +49,8 @@ class ServiceAreaAPIView(APIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk=None):
-        if pk is not None:
+    def delete(self, request, pk):
+        if pk:
             service_area = self.get_service_area(pk)
 
             if service_area:
